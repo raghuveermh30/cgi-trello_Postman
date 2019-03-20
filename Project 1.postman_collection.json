@@ -1,0 +1,334 @@
+{
+	"info": {
+		"_postman_id": "613d6df1-295c-4dc1-b444-79c2d170df42",
+		"name": "Project 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "070002cf-d2d6-4187-b92e-7cc38c28a323",
+						"exec": [
+							"pm.verifyContentTypeHeaer = function(){",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"    pm.response.headers.map(function(header){",
+							"        console.log(header.key);",
+							"        if(header.key === 'Content-Type'){",
+							"            pm.expect(header.value).to.eql('application/json; charset=utf-8');",
+							"        }",
+							"    })",
+							"});",
+							"}",
+							"",
+							"pm.test('Content-type is present ', pm.verifyContentTypeHeaer);",
+							"",
+							"var jsonData = pm.response.json();",
+							"console.log(jsonData.id);",
+							"console.log('id of the newly created board = ' ,jsonData.id);",
+							"pm.globals.set('boardID' , jsonData.id);",
+							"if(pm.response.code !==200){",
+							"    throw new Error('create failed');",
+							"}",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?key={{trellokey}}&name=b4&token={{trelloToken}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trellokey}}"
+						},
+						{
+							"key": "name",
+							"value": "b4"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update board",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4827721e-46ad-4165-91a1-75e3afe14785",
+						"exec": [
+							"",
+							"console.log(pm.globals.get('boardID'));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "883755dd-dc91-401f-973f-b2c0b220dba2",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id?key={{trellokey}}&name=b5&token={{trelloToken}}&desc=this is new board changed again",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trellokey}}"
+						},
+						{
+							"key": "name",
+							"value": "b5"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						},
+						{
+							"key": "desc",
+							"value": "this is new board changed again"
+						},
+						{
+							"key": "boolean",
+							"value": "true",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Board",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4827721e-46ad-4165-91a1-75e3afe14785",
+						"exec": [
+							"",
+							"console.log(pm.globals.get('boardID'));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0536506b-c958-4a45-9dbe-4b57920ba218",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id?key={{trellokey}}&token={{trelloToken}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trellokey}}"
+						},
+						{
+							"key": "name",
+							"value": "MyBoard1",
+							"disabled": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						},
+						{
+							"key": "desc",
+							"value": "this is new board changed again",
+							"disabled": true
+						},
+						{
+							"key": "boolean",
+							"value": "true",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9b8499c9-5321-47cb-b3c7-c14fadfcb883",
+						"exec": [
+							"//var jsonData = pm.response.json();",
+							"//console.log(jsonData);",
+							"//console.log('newName',pm.globals.get(jsonData.name));",
+							"",
+							"pm.test(\"check if name is really updated\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(pm.globals.get('newName'));",
+							"});",
+							"",
+							"//pm.test('Content-type is present ', pm.verifyContentTypeHeaer);",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"    pm.response.headers.map(function(header){",
+							"        console.log(header.key);",
+							"        if(header.key === 'Content-Type'){",
+							"            pm.expect(header.value).to.eql('application/json; charset=utf-8');",
+							"        }",
+							"    })",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.trello.com/1/boards/:id?key={{trellokey}}&token={{trelloToken}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trellokey}}"
+						},
+						{
+							"key": "name",
+							"value": "{{newName}}",
+							"disabled": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						},
+						{
+							"key": "desc",
+							"value": "this is new board changed again",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
